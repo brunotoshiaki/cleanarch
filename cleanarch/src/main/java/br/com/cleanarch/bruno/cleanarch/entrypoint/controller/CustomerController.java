@@ -2,6 +2,7 @@ package br.com.cleanarch.bruno.cleanarch.entrypoint.controller;
 
 import br.com.cleanarch.bruno.cleanarch.core.usecase.FindCustomerByIdUseCase;
 import br.com.cleanarch.bruno.cleanarch.core.usecase.InsertCustomerUseCase;
+import br.com.cleanarch.bruno.cleanarch.core.usecase.UpdateCustomerUseCase;
 import br.com.cleanarch.bruno.cleanarch.entrypoint.controller.mapper.CustomerMapper;
 import br.com.cleanarch.bruno.cleanarch.entrypoint.controller.request.CustomerRequest;
 import br.com.cleanarch.bruno.cleanarch.entrypoint.controller.response.CustomerResponse;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,6 +26,8 @@ public class CustomerController {
 
   private final FindCustomerByIdUseCase findCustomerByIdUseCase;
 
+  private final UpdateCustomerUseCase updateCustomerUseCase;
+
   @PostMapping
   public ResponseEntity<Void> insert(@Valid @RequestBody final CustomerRequest customerRequest) {
     this.insertCustomerUseCase.insert(CustomerMapper.INSTANCE.toCustomer(customerRequest),
@@ -36,6 +40,15 @@ public class CustomerController {
     final var customer = this.findCustomerByIdUseCase.find(id);
 
     return ResponseEntity.ok().body(CustomerMapper.INSTANCE.toCustomerResponse(customer));
+  }
+
+  @PutMapping("{id}")
+  public ResponseEntity<Void> update(@Valid @RequestBody final CustomerRequest customerRequest,
+      @PathVariable final String id) {
+    final var customer = CustomerMapper.INSTANCE.toCustomer(customerRequest);
+    customer.setId(id);
+    this.updateCustomerUseCase.update(customer, customerRequest.getZipCode());
+    return ResponseEntity.noContent().build();
   }
 
 }
