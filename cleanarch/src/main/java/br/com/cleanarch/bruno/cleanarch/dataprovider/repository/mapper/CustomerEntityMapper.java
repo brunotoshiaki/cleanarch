@@ -11,4 +11,6 @@ public interface CustomerEntityMapper {
   CustomerEntityMapper INSTANCE = Mappers.getMapper(CustomerEntityMapper.class);
 
   CustomerEntity toCustomerEntity(final Customer customer);
+
+  Customer toCustomer(final CustomerEntity customer);
 }
