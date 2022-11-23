@@ -1,4 +1,4 @@
-package br.com.cleanarch.bruno.cleanarch.dataprovider.client.converters;
+package br.com.cleanarch.bruno.cleanarch.dataprovider.client.mapper;
 
 import br.com.cleanarch.bruno.cleanarch.core.domain.Address;
 import br.com.cleanarch.bruno.cleanarch.dataprovider.client.response.AddressResponse;
